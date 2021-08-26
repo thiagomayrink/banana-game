@@ -5,3 +5,4 @@
 [Bb]in*
 package-lock.json
 webpack.config.js
+.eslintrc.js
