@@ -1,0 +1,7 @@
+[Bb]uild*
+[Dd]ataFiles*
+[Dd]ist*
+[Pp]ublic*
+[Bb]in*
+package-lock.json
+webpack.config.js
