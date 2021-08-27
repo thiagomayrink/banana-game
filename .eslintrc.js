@@ -12,11 +12,10 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     quotes: ['error', 'single'],
-    semi: ['error', 'always'],
     'arrow-parens': 'off',
     eqeqeq: 'error',
     'function-paren-newline': 'off',
-    indent: ['error', 2],
+    indent: ['error', 2, { SwitchCase: 1 }],
     'linebreak-style': [2, 'unix'],
     'no-console': [
       'error',
