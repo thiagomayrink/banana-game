@@ -18,6 +18,14 @@ const player = new Player(context, 480, 660);
 player.draw();
 
 window.addEventListener('keydown', e => onKeyDown(e));
+window.addEventListener('keyup', e => onKeyUp(e));
+
+function onKeyUp(e: KeyboardEvent) {
+  e.preventDefault();
+  if (e.key) {
+    player.idle();
+  }
+}
 
 function onKeyDown(e: KeyboardEvent) {
   e.preventDefault();

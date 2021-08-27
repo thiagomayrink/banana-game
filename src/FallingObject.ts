@@ -15,11 +15,11 @@ export default class FallingObject {
     this.speedY = 1.001;
   }
 
-  move() {
+  move(): void {
     this.y *= this.speedY;
   }
 
-  draw() {
+  draw(): void {
     this.context.beginPath();
     this.context.drawImage(this.image, 0, 0, 60, 60);
     this.context.fill();
