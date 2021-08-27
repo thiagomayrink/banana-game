@@ -1,3 +1,5 @@
+import FallingObject from './FallingObject';
+
 //abstract
 export default class Player {
   context: CanvasRenderingContext2D;
@@ -32,6 +34,29 @@ export default class Player {
     this.stepsInterval = 120;
     this.speed = 1.4;
     this.animationType = 51;
+  }
+
+  checkCollision(object: FallingObject): boolean {
+    const distX: number = Math.abs(object.x - this.x - this.width * 0.5);
+    const distY: number = Math.abs(object.y - this.y - this.height * 0.5);
+
+    if (distX > this.width * 0.5 + object.radius) {
+      return false;
+    }
+    if (distY > this.height * 0.5 + object.radius) {
+      return false;
+    }
+
+    if (distX <= this.width * 0.5) {
+      return true;
+    }
+    if (distY <= this.height * 0.5) {
+      return true;
+    }
+
+    const dx = distX - this.width * 0.5;
+    const dy = distY - this.height * 0.5;
+    return dx * dx + dy * dy <= object.radius * object.radius;
   }
 
   idle(): void {
