@@ -1,6 +1,5 @@
 import FallingObject from './FallingObject';
 
-//abstract
 export default class Player {
   context: CanvasRenderingContext2D;
   x: number;
@@ -88,8 +87,6 @@ export default class Player {
   }
 
   draw(): void {
-    this.context.strokeStyle = '#FF0000';
-    this.context.strokeRect(this.x, this.y, this.width, this.height);
     this.context.drawImage(
       this.image,
       this.frame * this.spriteWidth,
@@ -101,5 +98,7 @@ export default class Player {
       this.width,
       this.height,
     );
+    // this.context.strokeStyle = '#FF0000';
+    // this.context.strokeRect(this.x, this.y, this.width, this.height);
   }
 }

@@ -7,6 +7,8 @@ const context = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+context.font = '50px Ruslan Display';
+
 let timeToNextDrop = 0;
 const dropInterval = 2000;
 let lastTime = 0;
@@ -57,23 +59,30 @@ function animate(timestamp: number) {
     drops.push(new RandomFruit(context));
   }
 
-  player.draw();
   player.updateState(deltatime);
   drops.forEach(obj => {
     obj.move();
-    obj.draw();
-
     if (obj.isOutOfScreen(canvas)) {
       deleteFallingObject(obj);
     }
 
     if (player.checkCollision(obj)) {
-      score += 20;
+      score += 110;
       deleteFallingObject(obj);
     }
   });
 
+  player.draw();
+  drops.forEach(obj => obj.draw());
+  drawScore();
   animationInterval = window.requestAnimationFrame(animate);
+}
+
+function drawScore() {
+  context.fillStyle = '#3200A6';
+  context.fillText('Score: ' + score, canvas.width - 330, 40);
+  context.fillStyle = '#FEFAFF';
+  context.fillText('Score: ' + score, canvas.width - 333, 44);
 }
 
 function deleteFallingObject(object: FallingObject) {

@@ -16,12 +16,12 @@ export default abstract class FallingObject {
     this.context = context;
     this.x = randomIntFromInterval(0, 375);
     this.y = 10;
-    this.radius = 25;
-    this.speedY = 1.5;
-    this.spriteWidth = 50;
-    this.spriteHeight = 50;
-    this.width = 50;
-    this.height = 50;
+    this.radius = 35;
+    this.speedY = 2;
+    this.spriteWidth = 500;
+    this.spriteHeight = 500;
+    this.width = 60;
+    this.height = 60;
   }
 
   isOutOfScreen(canvas: HTMLCanvasElement): boolean {
@@ -33,11 +33,6 @@ export default abstract class FallingObject {
   }
 
   draw(): void {
-    this.context.beginPath();
-    this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-    this.context.strokeStyle = '#0000FF';
-    this.context.stroke();
-    this.context.drawImage(this.image, this.x, this.y, this.spriteWidth, this.spriteHeight);
     this.context.drawImage(
       this.image,
       0,
