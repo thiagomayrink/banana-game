@@ -1,6 +1,7 @@
 import Banana from './Banana';
 import Bomb from './Bomb';
 import FallingObject from './FallingObject';
+import Floor from './Floor';
 import Player from './Player';
 import RandomFruit from './RandomFruit';
 import { randomBoolean } from './tools/helpers';
@@ -25,8 +26,7 @@ let bananas: FallingObject[] = [];
 let bombs: FallingObject[] = [];
 
 const player = new Player(context, canvas.width * 0.5, canvas.height - 120);
-
-player.draw();
+const floor = new Floor(canvas, context);
 
 window.addEventListener('keydown', e => onKeyDown(e));
 window.addEventListener('keyup', e => onKeyUp(e));
@@ -111,6 +111,7 @@ function animate(timestamp: number) {
     }
   });
 
+  floor.draw();
   player.draw();
   drops.forEach(obj => obj.draw());
   bananas.forEach(banana => banana.draw());
@@ -140,19 +141,23 @@ function drawGameOve() {
 }
 
 function drawScore() {
+  const initialX = canvas.width * 0.95;
+  const initialY = canvas.height - canvas.height * 0.95;
   context.textAlign = 'right';
   context.fillStyle = '#3200A6';
-  context.fillText('Score: ' + score, canvas.width - 330, 20);
+  context.fillText('Score: ' + score, initialX, initialY, canvas.width * 0.5);
   context.fillStyle = '#FEFAFF';
-  context.fillText('Score: ' + score, canvas.width - 333, 24);
+  context.fillText('Score: ' + score, initialX + 3, initialY + 4, canvas.width * 0.5);
 }
 
 function drawLifes() {
+  const initialX = canvas.width - canvas.width * 0.95;
+  const initialY = canvas.height - canvas.height * 0.95;
   context.textAlign = 'left';
   context.fillStyle = 'yellow';
-  context.fillText('Lifes: ' + lifes, 40, 20);
+  context.fillText('Lifes: ' + lifes, initialX, initialY, canvas.width * 0.5);
   context.fillStyle = '#FF0000';
-  context.fillText('Lifes: ' + lifes, 42, 22);
+  context.fillText('Lifes: ' + lifes, initialX + 3, initialY + 4, canvas.width * 0.5);
 }
 
 function deleteFallingObject(object: FallingObject) {
