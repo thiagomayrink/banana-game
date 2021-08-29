@@ -1,4 +1,3 @@
-import Banana from './Banana';
 import Bomb from './Bomb';
 import FallingObject from './FallingObject';
 import Floor from './Floor';
@@ -13,16 +12,15 @@ canvas.height = window.innerHeight;
 
 context.font = '50px Ruslan Display';
 
-const dropInterval = 2000;
+const dropInterval = 1000;
 
 let timeToNextDrop = 0;
 let lastTime = 0;
 let animationInterval: number;
 let score = 0;
-let lifes = 3;
+let lifes = 4;
 let gameOver = false;
 let drops: FallingObject[] = [];
-let bananas: FallingObject[] = [];
 let bombs: FallingObject[] = [];
 
 const player = new Player(context, canvas.width * 0.5, canvas.height - 120);
@@ -68,8 +66,7 @@ function animate(timestamp: number) {
   if (timeToNextDrop > dropInterval) {
     timeToNextDrop = 0;
     drops.push(new RandomFruit(canvas, context));
-    if (randomBoolean(0.98)) bananas.push(new Banana(canvas, context));
-    if (randomBoolean(0.9)) bombs.push(new Bomb(canvas, context));
+    if (randomBoolean(0.8)) bombs.push(new Bomb(canvas, context));
   }
 
   player.updateState(deltatime);
@@ -77,10 +74,12 @@ function animate(timestamp: number) {
     obj.move();
     if (obj.isOutOfScreen(canvas)) {
       deleteFallingObject(obj);
+      lifes -= 1;
     }
 
     if (player.checkCollision(obj)) {
-      score += 20;
+      if (!isNaN(obj.score())) score += obj.score();
+      else score *= 2;
       deleteFallingObject(obj);
     }
   });
@@ -92,29 +91,16 @@ function animate(timestamp: number) {
     }
 
     if (player.checkCollision(bomb)) {
-      lifes -= 1;
       deleteBomb(bomb);
+      gameOver = true;
     }
   });
 
   if (lifes < 1) gameOver = true;
 
-  bananas.forEach(banana => {
-    banana.move();
-    if (banana.isOutOfScreen(canvas)) {
-      deleteBanana(banana);
-    }
-
-    if (player.checkCollision(banana)) {
-      score *= 2;
-      deleteBanana(banana);
-    }
-  });
-
   floor.draw();
   player.draw();
   drops.forEach(obj => obj.draw());
-  bananas.forEach(banana => banana.draw());
   bombs.forEach(bomb => bomb.draw());
   drawScore();
   drawLifes();
@@ -125,8 +111,13 @@ function animate(timestamp: number) {
 
 function drawGameOve() {
   context.textAlign = 'center';
-  context.fillStyle = '#000000';
-  context.fillText('GAME OVER, your score is: ' + score, canvas.width * 0.5, canvas.height * 0.5);
+  context.fillStyle = '#FF0000';
+  context.fillText(
+    'GAME OVER, your score is: ' + score,
+    canvas.width * 0.5,
+    canvas.height * 0.5,
+    canvas.width,
+  );
   context.fillStyle = '#FFFFFF';
   context.fillText(
     'GAME OVER, your score is: ' + score,
@@ -134,7 +125,7 @@ function drawGameOve() {
     canvas.height * 0.5 + 3,
   );
 
-  context.fillStyle = '#000000';
+  context.fillStyle = '#FF0000';
   context.fillText('Press SPACE to restart!', canvas.width * 0.5, canvas.height * 0.5 + 60);
   context.fillStyle = '#FFFFFF';
   context.fillText('Press SPACE to restart!', canvas.width * 0.5 + 3, canvas.height * 0.5 + 63);
@@ -164,10 +155,6 @@ function deleteFallingObject(object: FallingObject) {
   drops = drops.filter(o => o !== object);
 }
 
-function deleteBanana(object: FallingObject) {
-  bananas = bananas.filter(o => o !== object);
-}
-
 function deleteBomb(object: FallingObject) {
   bombs = bombs.filter(o => o !== object);
 }
@@ -188,7 +175,6 @@ function restartGame() {
   lifes = 3;
   gameOver = false;
   drops = [];
-  bananas = [];
   bombs = [];
   const restart = new Promise(() => window.location.reload());
   restart.then(() => animate(0));

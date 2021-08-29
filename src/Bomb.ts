@@ -11,4 +11,8 @@ export default class Bomb extends FallingObject {
     this.image = new Image();
     this.image.src = './assets/sprites/bomb.png';
   }
+
+  score(): number {
+    return undefined;
+  }
 }

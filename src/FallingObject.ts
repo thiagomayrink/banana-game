@@ -6,7 +6,7 @@ export default abstract class FallingObject {
   y: number;
   radius: number;
   image: HTMLImageElement;
-  speedY: number;
+  velocityY: number;
   spriteWidth: number;
   spriteHeight: number;
   width: number;
@@ -17,19 +17,21 @@ export default abstract class FallingObject {
     this.x = randomIntFromInterval(30, canvas.width - 30);
     this.y = 10;
     this.radius = 35;
-    this.speedY = 2;
+    this.velocityY = 2;
     this.spriteWidth = 500;
     this.spriteHeight = 500;
     this.width = 60;
     this.height = 60;
   }
 
+  abstract score(): number;
+
   isOutOfScreen(canvas: HTMLCanvasElement): boolean {
     return this.y < 0 || this.y > canvas.height;
   }
 
   move(): void {
-    this.y += 1 * this.speedY;
+    this.y += 1 * this.velocityY;
   }
 
   draw(): void {
