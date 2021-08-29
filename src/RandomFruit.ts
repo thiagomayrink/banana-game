@@ -6,12 +6,12 @@ export default class RandomFruit extends FallingObject {
   points: number;
   imagesPath: string[];
 
-  constructor(context: CanvasRenderingContext2D) {
+  constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
     const orange = './assets/sprites/orange.png';
     const redApple = './assets/sprites/red-apple.png';
     const strawberry = './assets/sprites/strawberry.png';
     const watermelon = './assets/sprites/watermelon.png';
-    super(context);
+    super(canvas, context);
 
     this.context = context;
     this.image = new Image();

@@ -19,12 +19,12 @@ export default class Player {
 
   constructor(context: CanvasRenderingContext2D, initialX: number, initialY: number) {
     this.context = context;
+    this.x = initialX;
+    this.y = initialY;
     this.spriteWidth = 30;
     this.spriteHeight = 50;
     this.width = 60;
     this.height = 100;
-    this.x = initialX;
-    this.y = initialY;
     this.image = new Image();
     this.image.src = './assets/sprites/player-sprite.png';
     this.frame = 0;

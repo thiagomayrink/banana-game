@@ -1,6 +1,6 @@
 import FallingObject from './FallingObject';
 
-export default class Banana extends FallingObject {
+export default class Bomb extends FallingObject {
   image: HTMLImageElement;
   points: number;
 
@@ -9,6 +9,6 @@ export default class Banana extends FallingObject {
 
     this.context = context;
     this.image = new Image();
-    this.image.src = './assets/sprites/banana.png';
+    this.image.src = './assets/sprites/bomb.png';
   }
 }

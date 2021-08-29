@@ -12,9 +12,9 @@ export default abstract class FallingObject {
   width: number;
   height: number;
 
-  constructor(context: CanvasRenderingContext2D) {
+  constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
     this.context = context;
-    this.x = randomIntFromInterval(0, 375);
+    this.x = randomIntFromInterval(30, canvas.width - 30);
     this.y = 10;
     this.radius = 35;
     this.speedY = 2;
