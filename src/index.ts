@@ -12,12 +12,14 @@ canvas.height = window.innerHeight;
 
 context.font = '50px Ruslan Display';
 
-let timeToNextDrop = 0;
 const dropInterval = 2000;
+
+let timeToNextDrop = 0;
 let lastTime = 0;
 let animationInterval: number;
 let score = 0;
 let lifes = 3;
+let gameOver = false;
 let drops: FallingObject[] = [];
 let bananas: FallingObject[] = [];
 let bombs: FallingObject[] = [];
@@ -50,6 +52,9 @@ function onKeyDown(e: KeyboardEvent) {
       break;
     case 's':
       startGame();
+      break;
+    case ' ':
+      restartGame();
       break;
   }
 }
@@ -92,6 +97,8 @@ function animate(timestamp: number) {
     }
   });
 
+  if (lifes < 1) gameOver = true;
+
   bananas.forEach(banana => {
     banana.move();
     if (banana.isOutOfScreen(canvas)) {
@@ -110,21 +117,42 @@ function animate(timestamp: number) {
   bombs.forEach(bomb => bomb.draw());
   drawScore();
   drawLifes();
-  animationInterval = window.requestAnimationFrame(animate);
+
+  if (!gameOver) animationInterval = window.requestAnimationFrame(animate);
+  else drawGameOve();
+}
+
+function drawGameOve() {
+  context.textAlign = 'center';
+  context.fillStyle = '#000000';
+  context.fillText('GAME OVER, your score is: ' + score, canvas.width * 0.5, canvas.height * 0.5);
+  context.fillStyle = '#FFFFFF';
+  context.fillText(
+    'GAME OVER, your score is: ' + score,
+    canvas.width * 0.5 + 3,
+    canvas.height * 0.5 + 3,
+  );
+
+  context.fillStyle = '#000000';
+  context.fillText('Press SPACE to restart!', canvas.width * 0.5, canvas.height * 0.5 + 60);
+  context.fillStyle = '#FFFFFF';
+  context.fillText('Press SPACE to restart!', canvas.width * 0.5 + 3, canvas.height * 0.5 + 63);
 }
 
 function drawScore() {
+  context.textAlign = 'right';
   context.fillStyle = '#3200A6';
-  context.fillText('Score: ' + score, canvas.width - 330, 40);
+  context.fillText('Score: ' + score, canvas.width - 330, 20);
   context.fillStyle = '#FEFAFF';
-  context.fillText('Score: ' + score, canvas.width - 333, 44);
+  context.fillText('Score: ' + score, canvas.width - 333, 24);
 }
 
 function drawLifes() {
+  context.textAlign = 'left';
   context.fillStyle = 'yellow';
-  context.fillText('Lifes: ' + lifes, 40, 40);
+  context.fillText('Lifes: ' + lifes, 40, 20);
   context.fillStyle = '#FF0000';
-  context.fillText('Lifes: ' + lifes, 42, 42);
+  context.fillText('Lifes: ' + lifes, 42, 22);
 }
 
 function deleteFallingObject(object: FallingObject) {
@@ -145,4 +173,18 @@ function stopAnimation(interval: number): void {
 
 function startGame() {
   animate(0);
+}
+
+function restartGame() {
+  timeToNextDrop = 0;
+  lastTime = 0;
+  animationInterval = 0;
+  score = 0;
+  lifes = 3;
+  gameOver = false;
+  drops = [];
+  bananas = [];
+  bombs = [];
+  const restart = new Promise(() => window.location.reload());
+  restart.then(() => animate(0));
 }
