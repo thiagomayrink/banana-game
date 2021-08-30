@@ -12,7 +12,7 @@ canvas.height = window.innerHeight;
 
 context.font = '50px Ruslan Display';
 
-const dropInterval = 1000;
+const dropInterval = 2000;
 
 let timeToNextDrop = 0;
 let lastTime = 0;
@@ -21,7 +21,6 @@ let score = 0;
 let lifes = 4;
 let gameOver = false;
 let drops: FallingObject[] = [];
-let bombs: FallingObject[] = [];
 
 const player = new Player(context, canvas.width * 0.5, canvas.height - 120);
 const floor = new Floor(canvas, context);
@@ -66,33 +65,24 @@ function animate(timestamp: number) {
   if (timeToNextDrop > dropInterval) {
     timeToNextDrop = 0;
     drops.push(new RandomFruit(canvas, context));
-    if (randomBoolean(0.8)) bombs.push(new Bomb(canvas, context));
+    if (randomBoolean(0.8)) drops.push(new Bomb(canvas, context));
   }
 
   player.updateState(deltatime);
   drops.forEach(obj => {
     obj.move();
     if (obj.isOutOfScreen(canvas)) {
+      const { isBomb } = obj.info();
+      if (!isBomb) lifes -= 1;
       deleteFallingObject(obj);
-      lifes -= 1;
     }
 
     if (player.checkCollision(obj)) {
-      if (!isNaN(obj.score())) score += obj.score();
-      else score *= 2;
+      const { points, isBanana, isBomb } = obj.info();
+      if (isBomb) gameOver = true;
+      if (isBanana) score *= 2;
+      if (points !== 0) score += points;
       deleteFallingObject(obj);
-    }
-  });
-
-  bombs.forEach(bomb => {
-    bomb.move();
-    if (bomb.isOutOfScreen(canvas)) {
-      deleteBomb(bomb);
-    }
-
-    if (player.checkCollision(bomb)) {
-      deleteBomb(bomb);
-      gameOver = true;
     }
   });
 
@@ -101,7 +91,6 @@ function animate(timestamp: number) {
   floor.draw();
   player.draw();
   drops.forEach(obj => obj.draw());
-  bombs.forEach(bomb => bomb.draw());
   drawScore();
   drawLifes();
 
@@ -155,10 +144,6 @@ function deleteFallingObject(object: FallingObject) {
   drops = drops.filter(o => o !== object);
 }
 
-function deleteBomb(object: FallingObject) {
-  bombs = bombs.filter(o => o !== object);
-}
-
 function stopAnimation(interval: number): void {
   window.cancelAnimationFrame(interval);
 }
@@ -175,7 +160,6 @@ function restartGame() {
   lifes = 3;
   gameOver = false;
   drops = [];
-  bombs = [];
   const restart = new Promise(() => window.location.reload());
   restart.then(() => animate(0));
 }

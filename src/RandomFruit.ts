@@ -19,12 +19,12 @@ export default class RandomFruit extends FallingObject {
     this.image.src = this.fruit;
   }
 
-  score(): number {
-    if (this.fruit === this.imagesPath[0]) return 5;
-    if (this.fruit === this.imagesPath[1]) return 10;
-    if (this.fruit === this.imagesPath[2]) return 20;
-    if (this.fruit === this.imagesPath[3]) return 30;
-    if (this.fruit === this.imagesPath[4]) return Number(NaN);
+  info(): { points: number; isBanana: boolean; isBomb: boolean } {
+    if (this.fruit === this.imagesPath[0]) return { points: 5, isBanana: false, isBomb: false };
+    if (this.fruit === this.imagesPath[1]) return { points: 10, isBanana: false, isBomb: false };
+    if (this.fruit === this.imagesPath[2]) return { points: 20, isBanana: false, isBomb: false };
+    if (this.fruit === this.imagesPath[3]) return { points: 30, isBanana: false, isBomb: false };
+    if (this.fruit === this.imagesPath[4]) return { points: 0, isBanana: true, isBomb: false };
   }
 
   returnRandomFruit(): number {

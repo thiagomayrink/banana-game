@@ -17,14 +17,14 @@ export default abstract class FallingObject {
     this.x = randomIntFromInterval(30, canvas.width - 30);
     this.y = 10;
     this.radius = 35;
-    this.velocityY = 2;
+    this.velocityY = randomIntFromInterval(2, 5);
     this.spriteWidth = 500;
     this.spriteHeight = 500;
     this.width = 60;
     this.height = 60;
   }
 
-  abstract score(): number;
+  abstract info(): { points: number; isBanana: boolean; isBomb: boolean };
 
   isOutOfScreen(canvas: HTMLCanvasElement): boolean {
     return this.y < 0 || this.y > canvas.height;

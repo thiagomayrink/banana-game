@@ -12,7 +12,7 @@ export default class Bomb extends FallingObject {
     this.image.src = './assets/sprites/bomb.png';
   }
 
-  score(): number {
-    return undefined;
+  info(): { points: number; isBanana: boolean; isBomb: boolean } {
+    return { points: 0, isBanana: false, isBomb: true };
   }
 }
