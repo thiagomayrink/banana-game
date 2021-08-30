@@ -9,6 +9,7 @@ body {
   
 #root {
 	min-height: 100vh;
+	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -19,4 +20,26 @@ canvas {
 	border-radius: 20px;
 	min-width: 240px;
 	height: 100vh;
+}
+
+.lifeBar{
+	display: flex;
+	position: absolute;
+	width: 200px;
+	height: 50px;
+	top: 1.5%;
+	left: 4%;
+}
+@media (max-width: 450px) {
+	.lifeBar{
+		display: flex;
+		position: absolute;
+		width: 50%;
+		height: 25px;
+		top: 2.5%;
+	}
+	.lifeBar img {
+		width: 25px;
+		height: 25px;
+	}
 }
